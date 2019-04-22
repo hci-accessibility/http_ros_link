@@ -9,12 +9,12 @@ def index():
 @post('/nav_xy_xy')
 def navigate():
     j = request.json
-    prof = j['prof']
-    start = j['start']
-    goal = j['goal']
-    # CALL ROS SERVICE HERE
-    # returning json as string for right now, 
+    prof = j['Profile']
+    start = j['Start']
+    goal = j['Goal']
+    # TODO: CALL ROS SERVICE HERE
+    # TODO: returning json as string for right now, 
     # return the route in the future instead
     return json.dumps(request.json)
 
-run(host='localhost', port=8080) #should change to the port i chose earlier
+run(host='localhost', port=18590) #should change to the port i chose earlier
