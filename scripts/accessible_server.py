@@ -29,8 +29,9 @@ def Apply_Profile(prof):
 def handle_Navigate_XY_XY(req):
 	print req
 	
-	Apply_Profile(req.profile)
 	#set_base to req.start
+	Apply_Profile(req.profile)
+
 	return goto_XY(req.end) 
 
 def goto_XY(end):
