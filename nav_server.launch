@@ -1,0 +1,6 @@
+<launch>
+
+	<node pkg="navfn" name="planner" type="navfn_node"\>
+		
+
+
