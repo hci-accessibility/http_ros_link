@@ -54,8 +54,8 @@ def handle_Navigate_XY_XY(req):
 
 
 def accessible_server():
-    rospy.init_node('nav_link_server')
-    s = rospy.Service('ApplyProfile', Apply_Profile, handle_ApplyProfile)
+    rospy.init_node('accessible_navigator')
+    s = rospy.Service('Navigate_XY', Navigate_XY, handle_Navigate_XY_XY)
     print "Ready to revice requests."
     rospy.spin()
 
