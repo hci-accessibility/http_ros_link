@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from accessible_navigator.srv import *
 from accessible_navigator.msg import *
