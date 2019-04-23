@@ -15,6 +15,17 @@ def navigate():
     # TODO: CALL ROS SERVICE HERE
     # TODO: returning json as string for right now, 
     # return the route in the future instead
-    return json.dumps(request.json)
+    # returning a fake route first instead
+    retdict = {
+	'plan': [
+		{'x': 1, 'y': 1, 'map_id': 1},
+		{'x': 10, 'y': 1, 'map_id': 1},
+		{'x': 10, 'y': 10, 'map_id': 1},
+		{'x': 100, 'y':100, 'map_id': 1},
+		{'x': 100, 'y':1000, 'map_id': 1},
+		{'x': 1000, 'y':900, 'map_id': 1}
+		]
+	}
+    return json.dumps(retdict)
 
 run(host='localhost', port=18590) #should change to the port i chose earlier
