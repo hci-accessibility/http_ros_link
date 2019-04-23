@@ -59,16 +59,7 @@ add_message_files(
 ## Generate services in the 'srv' folder
  add_service_files(
    FILES
-   AddTwoInts.srv
-   Apply_Profile.srv
-   CheckClear_Room.srv #reqs geo msgs
-   CheckClear_XY.srv #reqs geo msgs
-   Get_Costmap.srv #reqs geo msgs
-   Goto_XY.srv #reqs geo msgs
-   Navigate_RXY.srv #reqs geo msgs
    Navigate_XY.srv #reqs geo msgs
-   Navigate_Room.srv
-   Navigate_XYR.srv #reqs geo msgs
 )
 
 ## Generate actions in the 'action' folder
