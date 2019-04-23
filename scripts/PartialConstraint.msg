@@ -1,0 +1,2 @@
+int32 accessConstraint_ID
+int8 weight

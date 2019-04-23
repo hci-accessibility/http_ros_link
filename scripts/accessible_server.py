@@ -13,15 +13,16 @@ def Apply_Profile(prof):
 
 	#get occupancy map from 
 	setCostMap = rospy.ServiceProxy('navfn_node',SetCostMap.srv)
-	if prof        :  
-		#apply barrier profile 1
-		#setCostMap(costs, height, width)
-	elif           :
-		#apply barrier profile 2
-	else           :
-		#apply barrier profile 3
 
-
+	#
+	# used only for demo. The lengths, widths and costMaps are hard-coded
+	#
+	if (prof.effective_width == 12 && prof.effective_length == 12) :  
+		#setCostMap(costs, height, width) #apply costmap for barrier profile 1
+	elif (prof.effective_width == 10 && prof.effective_length == 20) :  
+		#setCostMap(costs, height, width) #apply costmap for barrier profile 2
+	else :  
+		#setCostMap(costs, height, width) #apply costmap for default barrier profile
 
 
 	print prof
@@ -33,21 +34,23 @@ def handle_Navigate_XY_XY(req):
 
 	#creates a function to get the path
 	getPath = rospy.ServiceProxy('navfn_node',MakeNavPlan.srv)
-
     try:
     	# gets path plan
 		resp = getPath(req.start, req.end)
-		if resp.foundPath == 1
-		 # transforms the pose coordinates to mapCoords
-			path_pose = resp.path 
+		if resp.foundPath == 1 #if a viable path is found
+			path_pose = resp.path  # stores found path
+
+		 # transforms path from pose coordinates to mapCoords
 			path_mapCoord = [MapCoord()] * len(path_pose)
-			for i, pose in enumerate(path_pose)
-				path_mapCoord[i].x = path_pose[i].pose.position.x
-				path_mapCoord[i].y = path_pose[i].pose.position.y
+			for i in range(len(path_pose))
+				path_mapCoord[i].point = path_pose[i].pose.position
 				path_mapCoord[i].map_id = 0
-		# return path
-			return path_mapCoord 
-       except rospy.ServiceException, e:
+
+			return path_mapCoord # return path
+
+       except rospy.ServiceException, e: 
+
+    return null #define return null if valid path was not created
 
 
 def accessible_server():
