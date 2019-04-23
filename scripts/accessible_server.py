@@ -12,12 +12,13 @@ def Apply_Profile(prof):
 	# PSQL should also do partials and user specific ones, but not important right now
 
 	#get occupancy map from 
-
+	setCostMap = rospy.ServiceProxy('navfn_node',SetCostMap.srv)
 	if prof        :  
 		#apply barrier profile 1
+		#setCostMap(costs, height, width)
 	elif           :
 		#apply barrier profile 2
-	elif           :
+	else           :
 		#apply barrier profile 3
 
 
@@ -28,18 +29,28 @@ def Apply_Profile(prof):
 
 def handle_Navigate_XY_XY(req):
 	print req
-	
-	#set_base to req.start
 	Apply_Profile(req.profile)
 
-	return goto_XY(req.end) 
+	#creates a function to get the path
+	getPath = rospy.ServiceProxy('navfn_node',MakeNavPlan.srv)
 
-def goto_XY(end):
-	path = [] #call the thing that returns the path with end as the parameter
-	return path
+    try:
+    	# gets path plan
+		resp = getPath(req.start, req.end)
+		if resp.foundPath == 1
+		 # transforms the pose coordinates to mapCoords
+			path_pose = resp.path 
+			path_mapCoord = [MapCoord()] * len(path_pose)
+			for i, pose in enumerate(path_pose)
+				path_mapCoord[i].x = path_pose[i].pose.position.x
+				path_mapCoord[i].y = path_pose[i].pose.position.y
+				path_mapCoord[i].map_id = 0
+		# return path
+			return path_mapCoord 
+       except rospy.ServiceException, e:
 
 
-def nav_link_server():
+def accessible_server():
     rospy.init_node('nav_link_server')
     s = rospy.Service('ApplyProfile', Apply_Profile, handle_ApplyProfile)
     print "Ready to revice requests."
