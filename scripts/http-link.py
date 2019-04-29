@@ -9,116 +9,150 @@ def index():
 @post('/nav_xy_xy')
 def navigate():
     j = request.json
-    prof = j['Profile']
-    canStair = prof['CanStair']
-    canHeavyDoor = prof['CanHeavyDoor']
-    start = j['Start']
-    goal = j['Goal']
+    prof = j['profile']
+    canStair = not prof['stairs']
+    canHeavyDoor = not prof['heavy doors']
+    start = j['start']
+    goal = j['goal']
 
-    outdoors = (950,150)
-    lounge = (850,450)
-    lectureHall = (430,725)
+# ~~~~~~~~~~~~~~~~~~~ Point names, for convenience
+    outdoors = (950,150)    #called A
+    lounge = (850,450)      #called B
+    lectureHall = (430,725) #called C
     # TODO: CALL ROS SERVICE HERE
-    # TODO: returning json as string for right now, 
-    # return the route in the future instead
-    # returning a fake route first instead
-    navcords = [
-        [ #start point 0
-            [ #end point 1
-                [#can stairs
-                    [#can heavy doors
-                        [ #points in order of traversal as tuples
-                            outdoors,
-                            lounge
-                        ],
-                        [ #points in order of traversal as tuples
-                            outdoors,
-                            lounge
-                        ]
-                    ],
-                    [#can heavy doors
-                        [ #points in order of traversal as tuples
-                            outdoors,
-                            lounge
-                        ],
-                        [ #points in order of traversal as tuples
-                            outdoors,
-                            lounge
-                        ]
-                    ]
-                ]
-            ],
-            [#end point 2
+    # TODO: returning hardcoded json for right now, 
 
-            ]
-        ],
-        [ #start point 1
-            [ #end point 2
-                [#can stairs
-                    [#can heavy doors
-                        [ #points in order of traversal as tuples
-                            lounge,
-                            lectureHall
-                        ],
-                        [ #points in order of traversal as tuples
-                            lounge,
-                            lectureHall
-                        ]
-                    ],
-                    [#can heavy doors
-                        [ #points in order of traversal as tuples
-                            lounge,
-                            lectureHall
-                        ],
-                        [ #points in order of traversal as tuples
-                            lounge,
-                            lectureHall
-                        ]
-                    ]
-                ]
-            ],
-            [#end point 0
+# ~~~~~~~~~~~~~~~~~~~ Hardcoded Routes
+    AB_00 =[ #can heavy doors & stairs
+        outdoors,
+        lounge
+    ]
+    AB_01=[#can heavy doors NO stairs
+        outdoors,
+        lounge
+    ]
+    AB_10 = [ #NO heavy doors, can stairs
+        outdoors,
+        lounge
+    ]
+    AB_11 = [ #NO heavy doors, NO stairs
+        outdoors,
+        lounge
+    ]
 
-            ]
-        ],
-        [ #start point 2
-            [ #end point 0
-                [#can stairs
-                    [#can heavy doors
-                        [ #points in order of traversal as tuples
-                            lectureHall,
-                            outdoors
-                        ],
-                        [ #points in order of traversal as tuples
-                            lectureHall,
-                            outdoors
-                        ]
-                    ],
-                    [#can heavy doors
-                        [ #points in order of traversal as tuples
-                            lectureHall,
-                            outdoors
-                        ],
-                        [ #points in order of traversal as tuples
-                            lectureHall,
-                            outdoors
-                        ]
-                    ]
-                ]
-            ],
-            [#end point 1
+    AC_00 =[ #heavy doors, can stairs
+        outdoors,
+        lectureHall
+    ]
+    AC_01 =[ #heavy doors, NO stairs
+        outdoors,
+        lectureHall
+    ]
+    AC_10 =[ #NO heavy doors, can stairs
+        outdoors,
+        lectureHall
+    ]
+    AC_11 =[ #NO heavy doors, NO stairs
+        outdoors,
+        lectureHall
+    ]
 
-            ]
-        ]
-    navcords[0][1][: for i in 0..1][for j in 0...1] = navcords[1][0][i][j][::-1]
-    navcords[1][1][: for i in 0..1][for j in 0...1] = navcords[2][0][i][j][::-1]
-    navcords[2][1][: for i in 0..1][for j in 0...1] = navcords[0][0][i][j][::-1]
+    BC_00 =[ #heavy doors, can stairs
+        lounge,
+        lectureHall
+    ]
+    BC_01 =[ #heavy doors, NO stairs
+        lounge,
+        lectureHall
+    ]
+    BC_10 =[ #NO heavy doors, can stairs
+        lounge,
+        lectureHall
+    ]
+    BC_11 =[ #NO heavy doors, NO stairs
+        lounge,
+        lectureHall
+    ]
 
-    plan = []
-    for tup in navcords[start][goal][canStair][canHeavyDoor]:
-        plan.append(retdict{'x': tup[0], 'y': tup[1],'map_id': 1})
-    
-    retdict = {'plan': plan}
-    return json.dumps(retdict)
+    #~~~~~~~~~~~~~~~~~~~~~~~~~ Lookup relevant route & (maybe) reverse it
+    #outdoors A
+    #lounge B
+    #lecturehall C
 
-run(host='localhost', port=18590) #should change to the port i chose earlier
+    if(canHeavyDoor and canStair):
+        if(start['x']==outdoors[0] and start['y']==outdoors[1]):
+            if(goal['x']==lounge[0] and goal['y']==lounge[1]):
+                plan = AB_00
+            elif(goal['x']==lectureHall[0] and goal['y']==lectureHall[1]):
+                plan = AC_00
+        elif(start['x']==lounge[0] and start['y']==lounge[1]):
+            if(goal['x']==outdoors[0] and goal['y']==outdoors[1]):
+                plan = AB_00[::-1]
+            elif(goal['x']==lectureHall[0] and goal['y']==lectureHall[1]):
+                plan = BC_00
+        elif(start['x']==lectureHall[0] and start['y']==lectureHall[1]):
+            if(goal['x']==outdoors[0] and goal['y']==lectureHall[1]):
+                plan = AC_00[::-1]
+            elif(goal['x']==lounge[0] and goal['y']==lounge[1]):
+                plan = BC_00[::-1]
+
+    if(canHeavyDoor and not canStair):
+        if(start['x']==outdoors[0] and start['y']==outdoors[1]):
+            if(goal['x']==lounge[0] and goal['y']==lounge[1]):
+                plan = AB_01
+            elif(goal['x']==lectureHall[0] and goal['y']==lectureHall[1]):
+                plan = AC_01
+        elif(start['x']==lounge[0] and start['y']==lounge[1]):
+            if(goal['x']==outdoors[0] and goal['y']==outdoors[1]):
+                plan = AB_01[::-1]
+            elif(goal['x']==lectureHall[0] and goal['y']==lectureHall[1]):
+                plan = BC_01
+        elif(start['x']==lectureHall[0] and start['y']==lectureHall[1]):
+            if(goal['x']==outdoors[0] and goal['y']==lectureHall[1]):
+                plan = AC_01[::-1]
+            elif(goal['x']==lounge[0] and goal['y']==lounge[1]):
+                plan = BC_01[::-1]
+
+    if(not canHeavyDoor and canStair):
+        if(start['x']==outdoors[0] and start['y']==outdoors[1]):
+            if(goal['x']==lounge[0] and goal['y']==lounge[1]):
+                plan = AB_10
+            elif(goal['x']==lectureHall[0] and goal['y']==lectureHall[1]):
+                plan = AC_10
+        elif(start['x']==lounge[0] and start['y']==lounge[1]):
+            if(goal['x']==outdoors[0] and goal['y']==outdoors[1]):
+                plan = AB_10[::-1]
+            elif(goal['x']==lectureHall[0] and goal['y']==lectureHall[1]):
+                plan = BC_10
+        elif(start['x']==lectureHall[0] and start['y']==lectureHall[1]):
+            if(goal['x']==outdoors[0] and goal['y']==lectureHall[1]):
+                plan = AC_10[::-1]
+            elif(goal['x']==lounge[0] and goal['y']==lounge[1]):
+                plan = BC_10[::-1]
+
+    if(not canHeavyDoor and not canStair):
+        if(start['x']==outdoors[0] and start['y']==outdoors[1]):
+            if(goal['x']==lounge[0] and goal['y']==lounge[1]):
+                plan = AB_11
+            elif(goal['x']==lectureHall[0] and goal['y']==lectureHall[1]):
+                plan = AC_11
+        elif(start['x']==lounge[0] and start['y']==lounge[1]):
+            if(goal['x']==outdoors[0] and goal['y']==outdoors[1]):
+                plan = AB_11[::-1]
+            elif(goal['x']==lectureHall[0] and goal['y']==lectureHall[1]):
+                plan = BC_11
+        elif(start['x']==lectureHall[0] and start['y']==lectureHall[1]):
+            if(goal['x']==outdoors[0] and goal['y']==lectureHall[1]):
+                plan = AC_11[::-1]
+            elif(goal['x']==lounge[0] and goal['y']==lounge[1]):
+                plan = BC_11[::-1]
+
+        #~~~~~~~~~~~~~~~~~~~~~~~~~ CONVERT TO DICT FOR json.dumps
+    route = []
+    for tup in plan:
+        route.append({'x': tup[0], 'y': tup[1],'map_id': 1})
+    return json.dumps({'plan': route})
+
+# NORMALLY: run the server
+
+run(host='localhost', port=18590)
