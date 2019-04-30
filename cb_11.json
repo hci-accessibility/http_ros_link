@@ -1,0 +1,14 @@
+{
+	"profile": {
+		"stairs": "true",
+		"heavy doors": "true"
+	},
+	"start": {
+		"x": 430,
+		"y": 725
+	},
+	"goal": {
+		"x": 850,
+		"y": 450
+	}
+}
