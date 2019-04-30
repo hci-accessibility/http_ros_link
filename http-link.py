@@ -22,31 +22,31 @@ def navigate():
     outdoors = (950,150)    #called A
     lounge = (850,450)      #called B
     lectureHall = (430,725) #called C
-#~~~~ Names used for purely convenience points
+    #~~~~ Names used for purely convenience points
     outNW = (9 , 19)
-outNE = (971 , 13)
-outSE = (925 , 969)
-outSW = (37 , 997)
-inNW = (267 , 257)
-inNE = (683 , 253)
-inSE = (687 , 649)
-inSW = (275 , 641)
-loungeDoorNout = (695 , 375)
-loungeDoorNin = (817 , 375)
-loungeDoorSout = (703 , 575)
-loungeDoorSin = (839 , 575)
-LS1 = (360 , 685)
-LS2 = (430 , 700)
-LS3 = (541 , 700)
-LS4 = (623 , 679)
-lectSW = (365 , 590)
-lectSE = (613 , 667)
-rampBot = (291 , 671)
-rampTop = (170 , 950)
-N = (467 , 5)
-S = (475 , 1050)
-E = (953 , 455)
-W = (5 , 500)
+    outNE = (971 , 13)
+    outSE = (925 , 969)
+    outSW = (37 , 997)
+    inNW = (267 , 257)
+    inNE = (683 , 253)
+    inSE = (687 , 649)
+    inSW = (275 , 641)
+    loungeDoorNout = (695 , 375)
+    loungeDoorNin = (817 , 375)
+    loungeDoorSout = (703 , 575)
+    loungeDoorSin = (839 , 575)
+    LS1 = (360 , 685)
+    LS2 = (430 , 700)
+    LS3 = (541 , 700)
+    LS4 = (623 , 679)
+    lectSW = (365 , 590)
+    lectSE = (613 , 667)
+    rampBot = (291 , 671)
+    rampTop = (170 , 950)
+    N = (467 , 5)
+    S = (475 , 1050)
+    E = (953 , 455)
+    W = (5 , 500)
 
 
 
@@ -56,54 +56,126 @@ W = (5 , 500)
 # ~~~~~~~~~~~~~~~~~~~ Hardcoded Routes
     AB_00 =[ #can heavy doors & stairs
         outdoors,
+        stairsNEtop,
+        inNE,
+        loungeDoorNout,
+        loungeDoorNin,
         lounge
     ]
     AB_01=[#can heavy doors NO stairs
         outdoors,
+        outNES,
+        outSEN,
+        outSE,
+        outSES,
+        S,
+        outSWS,
+        rampTop,
+        rampBot,
+        inSW,
+        inNW,
+        inNE,
+        loungeDoorNout,
+        loungeDoorNin,
         lounge
     ]
     AB_10 = [ #NO heavy doors, can stairs
         outdoors,
+        outNES,
+        outSEN,
+        stairsSEtop,
+        inSE,
+        loungeDoorNout,
+        loungeDoorNin,
         lounge
     ]
-    AB_11 = [ #NO heavy doors, NO stairs
-        outdoors,
-        lounge
-    ]
+    AB_11 = AB_01 #NO heavy doors, NO stairs, SAME as AB_01 because not cutting thru lecture hall.
 
     AC_00 =[ #heavy doors, can stairs
         outdoors,
+        stairsNEtop,
+        inNE,
+        loungeDoorSout,
+        lectSW,
+        LS4,
+        LS3,
+        LS6,
         lectureHall
     ]
     AC_01 =[ #heavy doors, NO stairs
         outdoors,
+        outNES,
+        outSEN,
+        outSE,
+        outSES,
+        S,
+        foyer,
+        LS5,
+        LS6
         lectureHall
     ]
     AC_10 =[ #NO heavy doors, can stairs
         outdoors,
+        outNEN,
+        outNWN,
+        stairsNWtop,
+        inNW,
+        inSW,
+        lectSW,
+        LS1,
+        LS2,
+        LS3,
+        LS6,
         lectureHall
     ]
     AC_11 =[ #NO heavy doors, NO stairs
         outdoors,
+        outNES,
+        outSEN,
+        outSE,
+        outSES,
+        S,
+        outSWS,
+        rampTop,
+        rampBot,
+        inSW,
+        lectSW,
+        LS1,
+        LS2,
+        LS3,
+        LS6,
         lectureHall
     ]
 
     BC_00 =[ #heavy doors, can stairs
         lounge,
+        loungeDoorNin,
+        loungeDoorNout,
+        loungeDoorSout,
+        lectSE,
+        LS4,
+        LS3,
+        LS6,
         lectureHall
     ]
-    BC_01 =[ #heavy doors, NO stairs
-        lounge,
-        lectureHall
-    ]
+    BC_01 = BC_00 #heavy doors, NO stairs #SAME as BC_00 b/c BC_00 route involves no stairs
+        
     BC_10 =[ #NO heavy doors, can stairs
         lounge,
+        loungeDoorNin,
+        loungeDoorNout,
+        inNE,
+        inNW,
+        inSW,
+        lectSW,
+        LS1,
+        LS2,
+        LS3,
+        LS6,
         lectureHall
     ]
-    BC_11 =[ #NO heavy doors, NO stairs
-        lounge,
-        lectureHall
-    ]
+    BC_11 = BC_10 #NO heavy doors, NO stairs #SAME as BC_10 b/c BC_10 route involves no stairs
+        
 
     #~~~~~~~~~~~~~~~~~~~~~~~~~ Lookup relevant route & (maybe) reverse it
     #outdoors A
