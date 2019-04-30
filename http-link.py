@@ -8,6 +8,8 @@ def index():
 
 @post('/nav_xy_xy')
 def navigate():
+
+
     j = request.json
     prof = j['profile']
     canStair = not prof['stairs']
@@ -16,9 +18,38 @@ def navigate():
     goal = j['goal']
 
 # ~~~~~~~~~~~~~~~~~~~ Point names, for convenience
+    #~~~~ Names used as starts or destinations
     outdoors = (950,150)    #called A
     lounge = (850,450)      #called B
     lectureHall = (430,725) #called C
+#~~~~ Names used for purely convenience points
+    outNW = (9 , 19)
+outNE = (971 , 13)
+outSE = (925 , 969)
+outSW = (37 , 997)
+inNW = (267 , 257)
+inNE = (683 , 253)
+inSE = (687 , 649)
+inSW = (275 , 641)
+loungeDoorNout = (695 , 375)
+loungeDoorNin = (817 , 375)
+loungeDoorSout = (703 , 575)
+loungeDoorSin = (839 , 575)
+LS1 = (360 , 685)
+LS2 = (430 , 700)
+LS3 = (541 , 700)
+LS4 = (623 , 679)
+lectSW = (365 , 590)
+lectSE = (613 , 667)
+rampBot = (291 , 671)
+rampTop = (170 , 950)
+N = (467 , 5)
+S = (475 , 1050)
+E = (953 , 455)
+W = (5 , 500)
+
+
+
     # TODO: CALL ROS SERVICE HERE
     # TODO: returning hardcoded json for right now, 
 
